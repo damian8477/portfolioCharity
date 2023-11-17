@@ -1,6 +1,32 @@
 document.addEventListener("DOMContentLoaded", function() {
+  let readQuantityButton = document.getElementById("summary-button");
+  let quantitySum = document.getElementById("quantity-sum");
+  let categorySum = document.getElementById("category-sum");
+  let institutionSum = document.getElementById("institution-sum");
+  let streetSum = document.getElementById("street-sum");
+  let citySum = document.getElementById("city-sum");
+  let zipCodeSum = document.getElementById("zip-code-sum");
+  let phoneSum = document.getElementById("phone-sum");
+  let dateSum = document.getElementById("date-sum");
+  let timeSum = document.getElementById("time-sum");
+  let commentSum = document.getElementById("comment-sum");
 
-  /**
+  readQuantityButton.addEventListener("click", function() {
+    quantitySum.innerText= document.getElementById("quantity22").value;
+    var selectedCategories = document.querySelectorAll('input[name="categories"]:checked');
+    selectedCategories.forEach(function(checkbox) {
+      categorySum.innerText += checkbox.label + ", ";
+    });
+    institutionSum.innerText = document.querySelector('input[name="institution"]:checked').title;
+    streetSum.innerText = document.getElementById("street").value;
+    citySum.innerText = document.getElementById("city").value;
+    zipCodeSum.innerText = document.getElementById("zip-code").value;
+    phoneSum.innerText = document.getElementById("phone").value;
+    dateSum.innerText = document.getElementById("pickUpDate").value;
+    timeSum.innerText = document.getElementById("pickUpTime").value;
+    commentSum.innerText = document.getElementById("pickUpComment").value;
+  });
+ /**
    * Form Select
    */
   class FormSelect {
@@ -51,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.dropdown.appendChild(this.valueInput);
       this.$el.parentElement.appendChild(this.dropdown);
     }
+
 
     addEvents() {
       this.dropdown.addEventListener("click", e => {
@@ -160,6 +187,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       });
 
+
+
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 5;
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
@@ -167,8 +196,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
   }
+
   const form = document.querySelector(".form--steps");
   if (form !== null) {
     new FormSteps(form);
   }
 });
+
+
+
