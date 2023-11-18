@@ -108,24 +108,6 @@
                         </label>
                     </div>
                 </c:forEach>
-<%--                <form:select path="institution" items="${institutions}" itemValue="name" itemLabel="name"--%>
-<%--                                 cssClass="form-group--checkbox" id="category-input"/>--%>
-<%--                <form:select path="institution" items="${institutions}" cssClass="form-group form-group--checkbox" id="institution-input"/>--%>
-<%--                <c:forEach items="${institutions}" var="institution">--%>
-<%--                    <div class="form-group form-group--checkbox">--%>
-<%--                        <label>--%>
-<%--                            <form:radiobutton path="institution" name="instit" value="${institution.name}"/>--%>
-<%--&lt;%&ndash;                            <input type="radio" name="organization" value="old"/>&ndash;%&gt;--%>
-<%--                            <span class="checkbox radio"></span>--%>
-<%--                            <span class="description">--%>
-<%--                          <div class="title">Fundacja “${institution.name}”</div>--%>
-<%--                          <div class="subtitle">--%>
-<%--                                ${institution.description}--%>
-<%--                          </div>--%>
-<%--                        </span>--%>
-<%--                        </label>--%>
-<%--                    </div>--%>
-<%--                </c:forEach>--%>
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn prev-step">Wstecz</button>
                     <button type="button" class="btn next-step">Dalej</button>
@@ -252,56 +234,7 @@
 
 </section>
 
-<footer>
-    <div class="contact">
-        <h2>Skontaktuj się z nami</h2>
-        <h3>Formularz kontaktowy</h3>
-        <form class="form--contact">
-            <div class="form-group form-group--50">
-                <input type="text" name="name" placeholder="Imię"/>
-            </div>
-            <div class="form-group form-group--50">
-                <input type="text" name="surname" placeholder="Nazwisko"/>
-            </div>
-
-            <div class="form-group">
-            <textarea
-                    name="message"
-                    placeholder="Wiadomość"
-                    rows="1"
-            ></textarea>
-            </div>
-
-            <button class="btn" type="submit">Wyślij</button>
-        </form>
-    </div>
-    <div class="bottom-line">
-        <span class="bottom-line--copy">Copyright &copy; 2018</span>
-        <div class="bottom-line--icons">
-            <a href="#" class="btn btn--small"
-            ><img src="images/icon-facebook.svg"
-            /></a>
-            <a href="#" class="btn btn--small"
-            ><img src="images/icon-instagram.svg"
-            /></a>
-        </div>
-    </div>
-</footer>
-<%--<script>--%>
-<%--    document.addEventListener("DOMContentLoaded", function() {--%>
-<%--        // Pobierz przycisk i pole quantity--%>
-<%--        var readQuantityButton = document.getElementById("summary-button");--%>
-<%--        var quantityInput = document.getElementById("quantity22");--%>
-
-<%--        // Dodaj obsługę zdarzenia kliknięcia przycisku--%>
-<%--        readQuantityButton.addEventListener("click", function() {--%>
-<%--            // Pobierz wartość pola quantity po kliknięciu przycisku--%>
-<%--            var quantityValue = quantityInput.value;--%>
-<%--            console.log("Wprowadzona ilość: " + quantityValue);--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
-<%-- Odczytaj wartość zmiennej z obiektu Model i przekaż do atrybutu data --%>
+<jsp:include page="../footer.jsp"/>
 <div id="mojaDiv" data-nazwa-zmiennej="${donation.quantity}"></div>
 
 <script src="../../../resources/js/app.js"></script>

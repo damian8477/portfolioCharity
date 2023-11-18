@@ -53,3 +53,6 @@
             </div>
         </div>
 </sec:authorize>
+<c:if test="${emailSend == true}">
+    <h1>Wiadomość została wysłana</h1>
+</c:if>
