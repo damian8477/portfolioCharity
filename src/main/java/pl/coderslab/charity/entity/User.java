@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -18,7 +19,7 @@ public class User {
     @Email
     @Column(nullable = false)
     private String email;
-    @Size(min = 4)
+    @Size(min = 8, message = "Hasło musi zawierać conajmniej 8 znaków")
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)

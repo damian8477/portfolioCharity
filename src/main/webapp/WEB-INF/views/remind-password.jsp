@@ -20,22 +20,18 @@
     </div>
 </c:if>
 <section class="login-page">
-    <h2>Zaloguj się</h2>
-    <form action="/login" method="post">
+    <h2>Zmień hasło</h2>
+    <form:form method="post" modelAttribute="user">
         <div class="form-group">
-            <input type="email" name="username" placeholder="Email"/>
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło"/>
-            <a href="/login/remind-pass" class="btn btn--small btn--without-border reset-password">Zapomniałem hasła</a>
+            <form:input path="email" type="email" placeholder="Email"/>
         </div>
 
         <div class="form-group form-group--buttons">
             <a href="/register" class="btn btn--without-border">Załóż konto</a>
-            <button class="btn" type="submit">Zaloguj się</button>
+            <button class="btn" type="submit">Wyślij email przypominający</button>
             <sec:csrfInput/>
         </div>
-    </form>
+    </form:form>
 </section>
 
 <jsp:include page="footer.jsp"/>
