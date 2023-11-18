@@ -3,6 +3,7 @@ package pl.coderslab.charity.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,7 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                     .antMatchers("/login", "/register", "/resources/**").permitAll()
-                    .antMatchers("/donation/**", "/user/setting/**").hasRole("USER")
+                    .antMatchers("/donation/**", "/user/setting/**").authenticated()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
 //                    .anyRequest().permitAll()
@@ -30,14 +31,23 @@ public class SecurityConfig {
                     .defaultSuccessUrl("/")
                     .successHandler((request, response, authentication) -> {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
-                        response.sendRedirect("/");
+                        for (GrantedAuthority auth : authentication.getAuthorities()) {
+                            if (auth.getAuthority().equals("ROLE_USER")) {
+                                response.sendRedirect("/");
+                            } else if (auth.getAuthority().equals("ROLE_ADMIN")) {
+                                response.sendRedirect("/admin");
+                            }
+                        }
                     })
                     .permitAll()
                 .and()
                     .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/")
-                    .and()
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/login?accessDenied=true") // Przekierowanie na stronę logowania w przypadku braku uprawnień
+                .and()
                 .csrf().disable();
 
         return http.build();
