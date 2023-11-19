@@ -5,12 +5,10 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.model.Email;
-import pl.coderslab.charity.repository.TokenRepository;
+import pl.coderslab.charity.model.EmailData;
 import pl.coderslab.charity.service_interface.EmailService;
 import pl.coderslab.charity.service_interface.TokenService;
 
@@ -25,7 +23,6 @@ import java.util.UUID;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
-    private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
     private String USER_MESSAGE = "Otrzymaliśmy Twoją wiadomość o treści:\n %s \n\n Odpowiemy na nią najszybciej jak będzie to możliwe. \n Pozdrawiamy \n Administratorzy";
@@ -54,36 +51,36 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public String getMessageFromEmailClass(Email email, boolean toUser) {
-        if(toUser){
+    public String getMessageFromEmailClass(EmailData email, boolean toUser) {
+        if (toUser) {
             return String.format(USER_MESSAGE, getMessageForAdmin(email));
         } else {
             return getMessageForAdmin(email);
         }
     }
-    private String getMessageForAdmin(Email email){
+
+    private String getMessageForAdmin(EmailData email) {
         return String.format("%s \nImię: %s\nNazwisko: %s\nEmail: %s\n\n Wiadomość: %s", LocalDateTime.now(), email.getName(), email.getSurname(), email.getEmail(), email.getMessage());
     }
 
     @Override
-    public String getConfirmationMessage(User user){
-        Token token = new Token();
-        UUID uuid = UUID.randomUUID();
-        String code = passwordEncoder.encode(uuid.toString());
-        token.setToken(code);
-        token.setUser(user);
-        tokenService.save(token);
-        return String.format("localhost:8081/register/confirm?token=%s", code.replace("\\{bcrypt}", ""));
+    public String getConfirmationMessage(User user) {
+        String code = generateCode(user);
+        return String.format("http://localhost:8081/register/confirm?token=%s", code);
     }
 
     @Override
-    public String getChangePasswordMessage(User user){
+    public String getChangePasswordMessage(User user) {
+        String code = generateCode(user);
+        return String.format("http://localhost:8081/login/remind-page?token=%s", code);
+    }
+
+    private String generateCode(User user) {
         Token token = new Token();
-        UUID uuid = UUID.randomUUID();
-        String code = passwordEncoder.encode(uuid.toString());
+        String code = UUID.randomUUID().toString();
         token.setToken(code);
         token.setUser(user);
         tokenService.save(token);
-        return String.format("localhost:8081/login/remind-page/?token=%s", code.replace("\\{bcrypt}", ""));
+        return code;
     }
 }

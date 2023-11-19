@@ -26,7 +26,9 @@
                 <div class="buttons">
                     <form action="/admin/users/active" method="post">
                         <input type="hidden" name="userId" value="${user.id}">
-                        <button class="btn btn-danger rounded-0 text-light m-1" type="submit" name="action" value="delete">OK</button>
+                        <button class="btn btn-danger rounded-0 text-light m-1" type="submit" name="action"
+                                value="delete">OK
+                        </button>
                     </form>
                     <form action="/admin/users" method="get">
                         <button class="btn btn-danger rounded-0 text-light m-1" type="submit">Anuluj</button>

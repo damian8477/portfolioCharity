@@ -13,25 +13,25 @@
     <div class="table-content">
         <div class="dashboard-content border-dashed p-3 m-4 view-height">
 
-                <form:form method="post" modelAttribute="institution">
+            <form:form method="post" modelAttribute="institution">
 
-                    <div class="form-group row">
-                        <label class="col-sm-2 label-size col-form-label">Nazwa</label>
-                        <div class="col-sm-10">
-                            <form:input path="name" class="form-control"/><form:errors path="name"/>
-                        </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 label-size col-form-label">Nazwa</label>
+                    <div class="col-sm-10">
+                        <form:input path="name" class="form-control"/><form:errors path="name"/>
                     </div>
-
-                    <div class="form-group row">
-                        <label class="col-sm-2 label-size col-form-label">Cel</label>
-                        <div class="col-sm-10">
-                            <form:input path="description" class="form-control"/><form:errors path="description"/>
-                        </div>
-                    </div>
-                    <form:hidden path="id"/>
-                    <form:button class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj</form:button>
-                    </form:form>
                 </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-2 label-size col-form-label">Cel</label>
+                    <div class="col-sm-10">
+                        <form:input path="description" class="form-control"/><form:errors path="description"/>
+                    </div>
+                </div>
+                <form:hidden path="id"/>
+                <form:button class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4">Dodaj</form:button>
+            </form:form>
+        </div>
     </div>
 </header>
 

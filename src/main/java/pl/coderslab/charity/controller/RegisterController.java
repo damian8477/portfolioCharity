@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.repository.TokenRepository;
 import pl.coderslab.charity.repository.UserRepository;
 import pl.coderslab.charity.service_interface.EmailService;
+import pl.coderslab.charity.service_interface.TokenService;
 
 import javax.validation.Valid;
 
@@ -25,7 +25,8 @@ public class RegisterController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final EmailService emailService;
-    private final TokenRepository tokenRepository;
+    private final TokenService tokenService;
+
     @GetMapping
     public String getRegisterView(Model model) {
         model.addAttribute("user", new User());
@@ -33,18 +34,18 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String processRegistrationPage2(@Valid User user, BindingResult bindingResult,  @RequestParam String password2, Model model) {
-        if(bindingResult.hasErrors() || !user.getPassword().equals(password2) || !user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")){
-            if(!user.getPassword().equals(password2)){
+    public String processRegistrationPage2(@Valid User user, BindingResult bindingResult, @RequestParam String password2, Model model) {
+        if (bindingResult.hasErrors() || !user.getPassword().equals(password2) || !user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            if (!user.getPassword().equals(password2)) {
                 bindingResult.addError(new FieldError("user", "password", "Hasła się różnią"));
             }
-            if(!user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")){
+            if (!user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
                 bindingResult.addError(new FieldError("user", "password", "Hasło musi zawierać: wielkie litery, małe litery, cyfry i znaki specjalne"));
             }
             model.addAttribute("user", user);
             return "register";
         }
-        if(userRepository.existsByEmail(user.getEmail())){
+        if (userRepository.existsByEmail(user.getEmail())) {
             bindingResult.addError(new FieldError("user", "email", "Podany email jest już zajęty"));
             model.addAttribute("user", user);
             return "register";
@@ -59,11 +60,11 @@ public class RegisterController {
     }
 
     @GetMapping("/confirm")
-    public String confirmAccount(@RequestParam String token){
-        Token tok = tokenRepository.getByToken("{bcrypt}" + token);
+    public String confirmAccount(@RequestParam String token) {
+        Token tok = tokenService.getByToken(token);
         User user = tok.getUser();
         user.setActive(true);
-        tokenRepository.deleteById(tok.getId());
+        tokenService.deleteById(tok.getId());
         return "redirect:/login";
     }
 

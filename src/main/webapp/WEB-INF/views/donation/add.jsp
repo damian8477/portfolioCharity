@@ -81,7 +81,6 @@
                     <label>
                         Liczba 60l worków:
                         <form:input path="quantity" id="quantity22" step="1" min="1"/>
-                            <%--                        <input type="number" name="bags" step="1" min="1"/>--%>
                     </label>
                 </div>
 
@@ -123,7 +122,7 @@
                         <h4>Adres odbioru</h4>
                         <div class="form-group form-group--inline">
                             <label> Ulica
-                                    <form:input path="street" id="street"/>
+                                <form:input path="street" id="street"/>
                             </label>
                         </div>
 
@@ -172,7 +171,9 @@
                 </div>
                 <div class="form-group form-group--buttons">
                     <button type="button" class="btn prev-step">Wstecz</button>
-                    <button type="button" class="btn next-step" id="summary-button" data-nazwa-zmiennej="${donation.quantity}">Dalej</button>
+                    <button type="button" class="btn next-step" id="summary-button"
+                            data-nazwa-zmiennej="${donation.quantity}">Dalej
+                    </button>
                 </div>
             </div>
 
@@ -229,6 +230,7 @@
                     <button type="submit" class="btn">Potwierdzam</button>
                 </div>
             </div>
+            <form:hidden path="received"/>
         </form:form>
     </div>
 

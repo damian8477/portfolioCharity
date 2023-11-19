@@ -9,7 +9,7 @@
 <jsp:include page="../head.jsp"/>
 <body>
 <header class="header--form-page">
-<%@include file="header.jsp" %>
+    <%@include file="header.jsp" %>
 </header>
 
 

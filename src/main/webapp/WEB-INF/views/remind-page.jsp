@@ -11,25 +11,26 @@
 <header class="header--main-page">
     <jsp:include page="header.jsp"/>
 </header>
-<c:if test="${param['error'] != null}">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        Błędne dane logowania!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-</c:if>
 <section class="login-page">
-    <h2>Zmień hasło</h2>
+    <h2>Wprowadź nowe hasło</h2>
     <form:form method="post" modelAttribute="user">
+        <form:hidden path="email"/>
+        <form:hidden path="name"/>
+        <form:hidden path="surname"/>
+        <form:hidden path="id"/>
+        <form:hidden path="active"/>
+        <form:hidden path="role"/>
         <div class="form-group">
-            <form:input path="email" type="email" placeholder="Email"/><br><form:errors path="email"/>
+            <form:input type="password" name="password" placeholder="Hasło" path="password"/>
+            <br><form:errors path="password"/>
+        </div>
+        <div class="form-group">
+            <input type="password" name="password2" placeholder="Powtórz hasło"/>
         </div>
 
         <div class="form-group form-group--buttons">
-            <a href="/register" class="btn btn--without-border">Załóż konto</a>
-            <button class="btn" type="submit">Wyślij email przypominający</button>
-            <sec:csrfInput/>
+            <a href="/login" class="btn btn--without-border">Zaloguj się</a>
+            <button class="btn" type="submit">Zmień hasło</button>
         </div>
     </form:form>
 </section>

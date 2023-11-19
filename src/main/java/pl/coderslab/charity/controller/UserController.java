@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.entity.User;
@@ -22,15 +21,16 @@ import javax.validation.Valid;
 public class UserController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
     @GetMapping("/edit")
-    public String getUserEditView(Model model, @AuthenticationPrincipal UserDetails authenticatedUser){
+    public String getUserEditView(Model model, @AuthenticationPrincipal UserDetails authenticatedUser) {
         model.addAttribute("user", userRepository.getByEmail(authenticatedUser.getUsername()));
         return "/user/edit";
     }
 
     @PostMapping("/edit")
-    public String userEdit(@Valid User user, BindingResult bindingResult, Model model, @AuthenticationPrincipal UserDetails authenticatedUser){
-        if(bindingResult.hasErrors()){
+    public String userEdit(@Valid User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("user", user);
             return "/user/edit";
         }

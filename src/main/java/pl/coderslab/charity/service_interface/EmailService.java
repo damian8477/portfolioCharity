@@ -1,7 +1,7 @@
 package pl.coderslab.charity.service_interface;
 
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.model.Email;
+import pl.coderslab.charity.model.EmailData;
 
 import javax.mail.MessagingException;
 
@@ -11,7 +11,7 @@ public interface EmailService {
     void sendMessageWithAttachment(
             String to, String subject, String text, String pathToAttachment) throws MessagingException;
 
-    String getMessageFromEmailClass(Email email, boolean toUser);
+    String getMessageFromEmailClass(EmailData email, boolean toUser);
 
     String getConfirmationMessage(User user);
 

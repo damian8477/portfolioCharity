@@ -20,30 +20,29 @@ public class SecurityConfig {
     @Bean
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                    .antMatchers("/", "/email", "/email/att", "/login", "/register/**", "/resources/**", "/login/**").permitAll()
-                    .antMatchers("/donation/**", "/user/setting/**").authenticated()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-//                    .anyRequest().permitAll()
+                .antMatchers("/", "/email", "/email/att", "/login", "/register/**", "/resources/**", "/login/**").permitAll()
+                .antMatchers("/donation/**", "/user/setting/**").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
                 .and()
-                    .formLogin()
-                    .loginPage("/login")
-                    .defaultSuccessUrl("/")
-                    .successHandler((request, response, authentication) -> {
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                        for (GrantedAuthority auth : authentication.getAuthorities()) {
-                            if (auth.getAuthority().equals("ROLE_USER")) {
-                                response.sendRedirect("/");
-                            } else if (auth.getAuthority().equals("ROLE_ADMIN")) {
-                                response.sendRedirect("/admin");
-                            }
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/")
+                .successHandler((request, response, authentication) -> {
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    for (GrantedAuthority auth : authentication.getAuthorities()) {
+                        if (auth.getAuthority().equals("ROLE_USER")) {
+                            response.sendRedirect("/");
+                        } else if (auth.getAuthority().equals("ROLE_ADMIN")) {
+                            response.sendRedirect("/admin");
                         }
-                    })
-                    .permitAll()
+                    }
+                })
+                .permitAll()
                 .and()
-                    .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/login?accessDenied=true") // Przekierowanie na stronę logowania w przypadku braku uprawnień

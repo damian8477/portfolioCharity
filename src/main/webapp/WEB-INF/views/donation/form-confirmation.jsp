@@ -6,21 +6,21 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="pl">
-  <jsp:include page="../head.jsp"/>
-  <body>
+<jsp:include page="../head.jsp"/>
+<body>
 
-    <header class="header--form-page">
-      <jsp:include page="../header.jsp"/>
-      <div class="slogan container container--90">
-          <h2>
+<header class="header--form-page">
+    <jsp:include page="../header.jsp"/>
+    <div class="slogan container container--90">
+        <h2>
             Dziękujemy za przesłanie formularza Na maila prześlemy wszelkie
             informacje o odbiorze.
-          </h2>
-      </div>
-    </header>
+        </h2>
+    </div>
+</header>
 
-    <jsp:include page="../footer.jsp"/>
+<jsp:include page="../footer.jsp"/>
 
-    <script src="js/app.js"></script>
-  </body>
+<script src="js/app.js"></script>
+</body>
 </html>

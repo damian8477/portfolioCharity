@@ -26,7 +26,9 @@
                 <div class="buttons">
                     <form action="/admin/institution/delete" method="post">
                         <input type="hidden" name="institutionId" value="${institution.id}">
-                        <button class="btn btn-danger rounded-0 text-light m-1" type="submit" name="action" value="delete">OK</button>
+                        <button class="btn btn-danger rounded-0 text-light m-1" type="submit" name="action"
+                                value="delete">OK
+                        </button>
                     </form>
                     <form action="/admin/institution" method="get">
                         <button class="btn btn-danger rounded-0 text-light m-1" type="submit">Anuluj</button>

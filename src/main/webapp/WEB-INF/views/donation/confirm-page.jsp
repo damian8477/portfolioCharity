@@ -6,7 +6,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html lang="pl">
-<jsp:include page="../../head.jsp"/>
+<jsp:include page="../head.jsp"/>
 <body>
 <header class="header--form-page">
     <jsp:include page="../header.jsp"/>
@@ -22,15 +22,15 @@
                 }
             </style>
             <div class="container2">
-                <h2>Czy na pewno chcesz usunąć użytkownika?</h2>
+                <h2>Czy na pewno chcesz potwierdzić przekazanie paczki kurierowi?</h2>
                 <div class="buttons">
-                    <form action="/admin/users/delete" method="post">
-                        <input type="hidden" name="userId" value="${user.id}">
+                    <form action="/donation/confirm" method="post">
+                        <input type="hidden" name="donationId" value="${donation.id}">
                         <button class="btn btn-danger rounded-0 text-light m-1" type="submit" name="action"
-                                value="delete">OK
+                                value="cofnrim">OK
                         </button>
                     </form>
-                    <form action="/admin/users" method="get">
+                    <form action="/admin/admins" method="get">
                         <button class="btn btn-danger rounded-0 text-light m-1" type="submit">Anuluj</button>
                     </form>
                 </div>
@@ -40,7 +40,7 @@
 </header>
 
 
-<%@include file="../../footer.jsp" %>
-<script src="<c:url value="../../../../resources/js/app.js"/>"></script>
+<%@include file="../footer.jsp" %>
+<script src="<c:url value="../../../resources/js/app.js"/>"></script>
 </body>
 </html>

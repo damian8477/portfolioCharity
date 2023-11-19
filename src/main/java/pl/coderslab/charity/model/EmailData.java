@@ -3,7 +3,7 @@ package pl.coderslab.charity.model;
 import lombok.Data;
 
 @Data
-public class Email {
+public class EmailData {
     private String name;
     private String surname;
     private String email;

@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.model.Email;
+import pl.coderslab.charity.model.EmailData;
 import pl.coderslab.charity.repository.UserRepository;
 
 import javax.servlet.*;
@@ -20,6 +19,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class NameFilter implements Filter {
     private final UserRepository userRepository;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
@@ -35,7 +35,7 @@ public class NameFilter implements Filter {
             String username = isNull(user) ? "" : user.getName();
             request.setAttribute("name", username);
         }
-        request.setAttribute("email", new Email());
+        request.setAttribute("email", new EmailData());
         chain.doFilter(request, response);
     }
 

@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -30,10 +31,28 @@ public class Donation {
     private LocalTime pickUpTime;
     @Column(name = "pick_up_comment")
     private String pickUpComment;
+    private boolean received = false;
+    private LocalDateTime receivedTime;
+    @Column(updatable = false)
+    private LocalDateTime created;
+    private LocalDateTime updated;
 
     @ManyToMany
     private List<Category> categories;
     @ManyToOne
     private Institution institution;
+    @ManyToOne
+    private User user;
+
+    @PrePersist
+    public void prePersis() {
+        created = LocalDateTime.now();
+        updated = created;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updated = LocalDateTime.now();
+    }
 
 }
