@@ -3,7 +3,9 @@ package pl.coderslab.charity.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.coderslab.charity.model.EmailData;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
 
@@ -19,6 +21,11 @@ public class HomeController {
         model.addAttribute("institutions", institutionRepository.findAll());
         model.addAttribute("sumPack", donationRepository.getSum());
         model.addAttribute("countDonation", donationRepository.getCount());
+        model.addAttribute("email", new EmailData());
         return "index";
+    }
+    @ModelAttribute("email")
+    public EmailData getEmailData() {
+        return new EmailData();
     }
 }

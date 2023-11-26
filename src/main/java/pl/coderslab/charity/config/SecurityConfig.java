@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig {
@@ -21,9 +22,12 @@ public class SecurityConfig {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/email", "/email/att", "/login", "/register/**", "/resources/**", "/login/**").permitAll()
+                .antMatchers("/hello").permitAll()
                 .antMatchers("/donation/**", "/user/setting/**").authenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/css/**", "/images/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
+//                .anyRequest().permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -47,7 +51,8 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .accessDeniedPage("/login?accessDenied=true") // Przekierowanie na stronę logowania w przypadku braku uprawnień
                 .and()
-                .csrf().disable();
+                .csrf()
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
         return http.build();
     }

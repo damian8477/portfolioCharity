@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.model.EmailData;
 import pl.coderslab.charity.service_interface.InstitutionService;
 import pl.coderslab.charity.service_interface.UserService;
 
@@ -187,5 +188,9 @@ public class AdminController {
         return List.of("ROLE_ADMIN", "ROLE_USER");
     }
 
+    @ModelAttribute("email")
+    public EmailData getEmailData() {
+        return new EmailData();
+    }
 
 }

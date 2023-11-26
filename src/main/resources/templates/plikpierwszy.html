@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="head"></div>
+<body>
+<header class="header--main-page" th:include="header"></header>
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    Użytkownik jest zalogowany.
+</div>
+<span th:utext="${email}"></span>
+<!-- Reszta zawartości strony -->
+<footer th:include="footer"></footer>
+
+</body>
+
+</html>
