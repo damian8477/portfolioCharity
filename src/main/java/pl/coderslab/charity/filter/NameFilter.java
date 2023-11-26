@@ -11,6 +11,7 @@ import pl.coderslab.charity.repository.UserRepository;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static java.util.Objects.isNull;
 
@@ -27,8 +28,9 @@ public class NameFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        request.setCharacterEncoding(StandardCharsets.UTF_8.name());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             User user = userRepository.getByEmail(authentication.getName());

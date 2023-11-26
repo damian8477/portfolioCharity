@@ -25,9 +25,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public void deleteAllByUserId(Long userId) {
         List<Token> tokens = tokenRepository.findAll();
-        tokens.forEach(token -> {
-            tokenRepository.deleteById(token.getId());
-        });
+        tokens.forEach(token -> tokenRepository.deleteById(token.getId()));
     }
 
     @Override

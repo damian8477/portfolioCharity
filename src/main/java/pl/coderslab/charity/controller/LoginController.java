@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.service.MessageServiceImpl;
 import pl.coderslab.charity.service_interface.EmailService;
+import pl.coderslab.charity.service_interface.MessageService;
 import pl.coderslab.charity.service_interface.TokenService;
 import pl.coderslab.charity.service_interface.UserService;
 
 import javax.validation.Valid;
+
+import java.util.Locale;
 
 import static java.util.Objects.isNull;
 
@@ -28,6 +32,7 @@ public class LoginController {
     private final EmailService emailService;
     private final TokenService tokenService;
     private final PasswordEncoder passwordEncoder;
+    private final MessageService messageService;
 
     @GetMapping
     public String getLoginView(Model model) {
@@ -42,17 +47,17 @@ public class LoginController {
     }
 
     @PostMapping("/remind-pass")
-    public String remindPassword(User user, BindingResult bindingResult) {
+    public String remindPassword(User user, BindingResult bindingResult, Locale locale) {
         if (!userService.existsByEmail(user.getEmail())) {
-            bindingResult.addError(new FieldError("user", "email", "Podany email jest nie poprawny"));
+            bindingResult.addError(new FieldError("user", "email", messageService.getEmailIncorrect(locale)));
             return "/remind-password";
         }
         user = userService.getByEmail(user.getEmail());
         if (!user.getActive()) {
-            bindingResult.addError(new FieldError("user", "email", "Potwierdź aktywacje konta, link wysłany został na adres email"));
+            bindingResult.addError(new FieldError("user", "email", messageService.getEmailConfirmation(locale)));
             return "/remind-password";
         }
-        emailService.sendMessage(user.getEmail(), "Link do zmiany hasła", emailService.getChangePasswordMessage(user));
+        emailService.sendMessage(user.getEmail(), messageService.getPasswordChange(locale), emailService.getChangePasswordMessage(user));
         return "redirect:/";
     }
 
@@ -71,13 +76,13 @@ public class LoginController {
     }
 
     @PostMapping("/remind-page")
-    public String remindPage(@Valid User user, BindingResult bindingResult, @RequestParam String password2, Model model) {
+    public String remindPage(@Valid User user, BindingResult bindingResult, @RequestParam String password2, Model model, Locale locale) {
         if (bindingResult.hasErrors() || !user.getPassword().equals(password2) || !user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             if (!user.getPassword().equals(password2)) {
-                bindingResult.addError(new FieldError("user", "password", "Hasła się różnią"));
+                bindingResult.addError(new FieldError("user", "password", messageService.getPasswordDifferent(locale)));
             }
             if (!user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-                bindingResult.addError(new FieldError("user", "password", "Hasło musi zawierać: wielkie litery, małe litery, cyfry i znaki specjalne"));
+                bindingResult.addError(new FieldError("user", "password", messageService.getPasswordRequirements(locale)));
             }
             model.addAttribute("user", user);
             return "remind-page";

@@ -16,6 +16,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 @Component
@@ -24,8 +25,7 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender emailSender;
     private final TokenService tokenService;
-
-    private String USER_MESSAGE = "Otrzymaliśmy Twoją wiadomość o treści:\n %s \n\n Odpowiemy na nią najszybciej jak będzie to możliwe. \n Pozdrawiamy \n Administratorzy";
+    private final MessageServiceImpl messageService;
 
     @Override
     public void sendMessage(String to, String subject, String text) {
@@ -51,16 +51,16 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public String getMessageFromEmailClass(EmailData email, boolean toUser) {
+    public String getMessageFromEmailClass(EmailData email, boolean toUser, Locale locale) {
         if (toUser) {
-            return String.format(USER_MESSAGE, getMessageForAdmin(email));
+            return String.format(messageService.getEmailContact(locale), getMessageForAdmin(email, locale));
         } else {
-            return getMessageForAdmin(email);
+            return getMessageForAdmin(email, locale);
         }
     }
 
-    private String getMessageForAdmin(EmailData email) {
-        return String.format("%s \nImię: %s\nNazwisko: %s\nEmail: %s\n\n Wiadomość: %s", LocalDateTime.now(), email.getName(), email.getSurname(), email.getEmail(), email.getMessage());
+    private String getMessageForAdmin(EmailData email, Locale locale) {
+        return String.format(messageService.getEmailContactMessageAdmin(locale), LocalDateTime.now(), email.getName(), email.getSurname(), email.getEmail(), email.getMessage());
     }
 
     @Override

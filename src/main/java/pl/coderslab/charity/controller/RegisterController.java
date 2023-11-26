@@ -14,9 +14,12 @@ import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.repository.UserRepository;
 import pl.coderslab.charity.service_interface.EmailService;
+import pl.coderslab.charity.service_interface.MessageService;
 import pl.coderslab.charity.service_interface.TokenService;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/register")
@@ -26,6 +29,7 @@ public class RegisterController {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final TokenService tokenService;
+    private final MessageService messageService;
 
     @GetMapping
     public String getRegisterView(Model model) {
@@ -34,19 +38,19 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String processRegistrationPage2(@Valid User user, BindingResult bindingResult, @RequestParam String password2, Model model) {
+    public String processRegistrationPage2(@Valid User user, BindingResult bindingResult, @RequestParam String password2, Model model, Locale locale) {
         if (bindingResult.hasErrors() || !user.getPassword().equals(password2) || !user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             if (!user.getPassword().equals(password2)) {
-                bindingResult.addError(new FieldError("user", "password", "Hasła się różnią"));
+                bindingResult.addError(new FieldError("user", "password", messageService.getPasswordDifferent(locale)));
             }
             if (!user.getPassword().matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-                bindingResult.addError(new FieldError("user", "password", "Hasło musi zawierać: wielkie litery, małe litery, cyfry i znaki specjalne"));
+                bindingResult.addError(new FieldError("user", "password", messageService.getPasswordRequirements(locale)));
             }
             model.addAttribute("user", user);
             return "register";
         }
         if (userRepository.existsByEmail(user.getEmail())) {
-            bindingResult.addError(new FieldError("user", "email", "Podany email jest już zajęty"));
+            bindingResult.addError(new FieldError("user", "email", messageService.getEmailAlreadyTaken(locale)));
             model.addAttribute("user", user);
             return "register";
         }
@@ -55,7 +59,7 @@ public class RegisterController {
         user.setActive(false);
         user.setRole("ROLE_USER");
         user = userRepository.save(user);
-        emailService.sendMessage(user.getEmail(), "Potwierdź rejestracje", emailService.getConfirmationMessage(user));
+        emailService.sendMessage(user.getEmail(), messageService.getRegistrationConfirm(locale), emailService.getConfirmationMessage(user));
         return "redirect:/login";
     }
 

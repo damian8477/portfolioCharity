@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.charity.entity.Institution;
 import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.repository.InstitutionRepository;
+import pl.coderslab.charity.service_interface.InstitutionService;
 import pl.coderslab.charity.service_interface.UserService;
 
 import javax.validation.Valid;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-    private final InstitutionRepository institutionRepository;
+    private final InstitutionService institutionService;
     private final UserService userService;
 
     @GetMapping
@@ -29,7 +29,7 @@ public class AdminController {
 
     @GetMapping("/institution")
     public String getInstitutionView(Model model) {
-        model.addAttribute("institutions", institutionRepository.findAll());
+        model.addAttribute("institutions", institutionService.findAll());
         return "/admin/institution/list";
     }
 
@@ -45,13 +45,13 @@ public class AdminController {
             model.addAttribute("institution", institution);
             return "/admin/institution/add";
         }
-        institutionRepository.save(institution);
+        institutionService.save(institution);
         return "redirect:/admin/institution";
     }
 
     @GetMapping("/institution/edit")
     public String getInstitutionEditView(Model model, @RequestParam Long institutionId) {
-        model.addAttribute("institution", institutionRepository.getById(institutionId));
+        model.addAttribute("institution", institutionService.getById(institutionId));
         return "/admin/institution/edit";
     }
 
@@ -61,19 +61,19 @@ public class AdminController {
             model.addAttribute("institution", institution);
             return "/admin/institution/edit";
         }
-        institutionRepository.save(institution);
+        institutionService.save(institution);
         return "redirect:/admin/institution";
     }
 
     @GetMapping("/institution/delete")
     public String getInstitutionDeleteView(Model model, @RequestParam Long institutionId) {
-        model.addAttribute("institution", institutionRepository.getById(institutionId));
+        model.addAttribute("institution", institutionService.getById(institutionId));
         return "/admin/institution/delete";
     }
 
     @PostMapping("/institution/delete")
     public String institutionDelete(@RequestParam Long institutionId) {
-        institutionRepository.deleteById(institutionId);
+        institutionService.deleteById(institutionId);
         return "redirect:/admin/institution";
     }
 
