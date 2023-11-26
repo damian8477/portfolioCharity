@@ -10,7 +10,7 @@
     <div class="contact">
         <h2>Skontaktuj się z nami</h2>
         <h3>Formularz kontaktowy</h3>
-        <form method="post" action="/email" class="form--contact" th:object="${email}">
+        <form method="post" th:action="@{/email}" class="form--contact" th:object="${email}">
             <div class="form-group form-group--50">
                 <input type="text" th:field="*{name}" placeholder="Imię"/>
             </div>

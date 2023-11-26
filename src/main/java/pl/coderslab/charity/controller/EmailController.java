@@ -13,14 +13,14 @@ import javax.validation.Valid;
 import java.util.Locale;
 
 @Controller
-@RequestMapping("/email")
+//@RequestMapping("/email")
 @RequiredArgsConstructor
 public class EmailController {
     private final EmailService emailService;
     private final MessageService messageService;
     private final String EMAIL_CONTACT = "dziuba925@gmail.com";
 
-    @PostMapping
+    @PostMapping("/email")
     public String sendEmail(@Valid EmailData email, BindingResult bindingResult, Model model, Locale locale) {
         if (bindingResult.hasErrors()) {
             model.addAttribute(email);
@@ -28,11 +28,12 @@ public class EmailController {
         }
         emailService.sendMessage(EMAIL_CONTACT, messageService.getEmailContactForm(locale), emailService.getMessageFromEmailClass(email, false, locale));
         emailService.sendMessage(email.getEmail(), messageService.getEmailContactForm(locale), emailService.getMessageFromEmailClass(email, true, locale));
+        System.out.println("xd");
         model.addAttribute("emailSend", true);
         return "redirect:/";
     }
 
-    @GetMapping("/att")
+    @GetMapping("/email/att")
     @ResponseBody
     public String sendAtt() {
         try {

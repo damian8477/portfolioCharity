@@ -5,7 +5,9 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.model.EmailData;
@@ -19,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.UUID;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
@@ -28,7 +30,9 @@ public class EmailServiceImpl implements EmailService {
     private final MessageServiceImpl messageService;
 
     @Override
+    @Async
     public void sendMessage(String to, String subject, String text) {
+        System.out.println("wyslalem");
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("noreply@baeldung.com");
         message.setTo(to);
